@@ -78,7 +78,7 @@ app.post('/inserirprof', (req, res) => {
 });
 
 app.get('/atualizar', (req, res) => {
-    aluno.ListarTodosAlunos((err, alunos) => {
+    professor.ListarTodos((err, professor) => {
       if (err) {
         console.error(err);
         res.redirect('/erro');
@@ -90,14 +90,17 @@ app.get('/atualizar', (req, res) => {
             <li><a href="/apagar">Apagar</a></li>
             <li><a href="/listar">Listar</a></li>
           </ul>
-          <h1>Atualizar Aluno</h1>
-          <form action="/atualizaraluno" method="post">
-            <label>Escolha um Aluno:</label>
+          <h1>Atualizar Professor</h1>
+          <form action="/atualizarprofessor" method="post">
+            <label>Escolha um Professor:</label>
             <select name="id" required>
-              ${alunos.map((aluno) => `<option value="${aluno.ID}">${aluno.Nome}</option>`).join('')}
+              ${professor.map((professor) => `<option value="${professor.ID}">${professor.Nome}</option>`).join('')}
             </select><br><br>
             <label>Novo Nome:</label>
             <input type="text" name="nome" required><br><br>
+            <b>Titulações:</b> Doutor, Mestre, Especialista e Graduado<br>
+            <label>Nova Titulação:</label>
+            <input type="text" name="titulacao"><br><br>
             <input type="submit" value="Atualizar">
           </form>
         `);
@@ -105,13 +108,14 @@ app.get('/atualizar', (req, res) => {
     });
   });
 
-app.post('/atualizaraluno', (req, res) => {
+app.post('/atualizarprofessor', (req, res) => {
    
   const nome = req.body.nome;
-  const id = req.body.id;
+  const ID = req.body.id;
+  const titulacao = req.body.titulacao;
  
-  aluno.Atualizar(id, nome, (error, rows) => {
-    if (err) {
+  professor.atualizar(ID, nome, titulacao, (error, rows) => {
+    if (error) {
         console.error(error);
         res.redirect('/erro');
     } else {
@@ -131,8 +135,9 @@ app.post('/atualizaraluno', (req, res) => {
       res.send(`
         <h1>Menu</h1>
          <ul>
-           <li><a href="/inserir">Adicionar Aluno</a></li>
-           <li><a href="/apagar">Apagar Aluno</a></li>
+           <li><a href="/">Principal</a></li>
+           <li><a href="/inserir">Adicionar Professor</a></li>
+           <li><a href="/apagar">Apagar Professor</a></li>
          </ul>
          <br>
           <table>
@@ -157,9 +162,9 @@ app.get('/apagar', (req, res) => {
       <li><a href="/inserir">Inserir</a></li>
       <li><a href="/listar">Listar</a></li>
     </ul>
-    <h1>Apagar Aluno</h1>
-    <form action="/apagaraluno" method="post">
-      <label>ID do Aluno:</label>
+    <h1>Apagar professor</h1>
+    <form action="/apagarprofessor" method="post">
+      <label>ID do Professor:</label>
       <input type="number" name="id" required><br><br>
       <input type="submit" value="Apagar">
     </form>
@@ -167,12 +172,12 @@ app.get('/apagar', (req, res) => {
 });
 
 // Rota para a função de apagar o aluno
-app.post('/apagaraluno', (req, res) => {
-  const idAluno = req.body.id;
+app.post('/apagarprofessor', (req, res) => {
+  const ID = req.body.id;
   
-  aluno.Apagar(idAluno, (err, result) => {
-    if (err) {
-      console.error(err);
+  professor.apagar(ID, (error, result) => {
+    if (error) {
+      console.error(error);
       res.redirect('/erro');
     } else {
       if (result.affectedRows > 0) {

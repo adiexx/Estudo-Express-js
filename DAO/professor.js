@@ -83,17 +83,20 @@ function apagar(ID, callback)
       }
       else
       {
-       callback(null,results.affectedRows);
+       callback(null, results);
        // Chama o callback com o número de linhas afetadas
       }
       }
     );
 }
 
-function atualizar(ID, Nome, callback)
+
+
+function atualizar(ID, Nome, titulacao, callback)
 {
-  connection.query("UPDATE aluno SET nome=?"+
-  " where aluno.id=?",
+  if (titulacao === "" || titulacao === null || titulacao === undefined){
+  connection.query("UPDATE professor SET nome=?"+
+  " where professor.ID=?",
   [Nome,ID],
    function(err,results)
    {
@@ -105,7 +108,22 @@ function atualizar(ID, Nome, callback)
       callback(null, results);
     } 
   } 
-  );
+  )}
+
+  else {
+  connection.query("UPDATE professor SET nome=?, titulacao=? where professor.ID=?",
+  [Nome, titulacao,ID],
+   function(err,results)
+   {
+    if (err) {
+      console.error('Erro ao atualizar aluno:', err);
+      callback(err, null);
+    } else {
+      console.log('Resultado da operação de atualizar aluno:', results);
+      callback(null, results);
+    } 
+  }) 
+  }
 }
 
 function ListarTodos(callback)
