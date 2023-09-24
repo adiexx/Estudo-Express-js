@@ -64,6 +64,7 @@ function inserir(CPF, nome, titulacao, callback)
         catch(error){
             console.clear();
             console.log(error.message);
+            callback(err, null );
         }
        
     };
@@ -109,7 +110,7 @@ function atualizar(ID, Nome, callback)
 function ListarTodos(callback)
 {
   connection.query(
-    "SELECT * FROM aluno",
+    "SELECT * FROM professor",
     function(err,results)
     {
       if (err) {
@@ -120,3 +121,5 @@ function ListarTodos(callback)
     }
     );  
 }
+
+module.exports = { inserir, apagar, atualizar, ListarTodos };
