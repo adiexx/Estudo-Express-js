@@ -11,7 +11,6 @@ connection = mysql.createConnection({
 host: 'localhost', user: 'root', database: 'escola'
 });
 //criando conexao com o banco de dados
-inserir ('99055791091', 'João', 'Mestre');
 }
 
 catch(error)
@@ -87,4 +86,37 @@ function apagar(ID, callback)
         }
     }
     );
+}
+
+function atualizar(ID, Nome, callback)
+{
+  connection.query("UPDATE aluno SET nome=?"+
+  " where aluno.id=?",
+  [Nome,ID],
+   function(err,results)
+   {
+    if (err) {
+      console.error('Erro ao atualizar aluno:', err);
+      callback(err, null);
+    } else {
+      console.log('Resultado da operação de atualizar aluno:', results);
+      callback(null, results);
+    } 
+  } 
+  );
+}
+
+function ListarTodos(callback)
+{
+  connection.query(
+    "SELECT * FROM aluno",
+    function(err,results)
+    {
+      if (err) {
+        callback(err, null); // Chama o callback com erro
+       } else {
+        callback(null, results);
+      } // Chama o callback com o resultado
+    }
+    );  
 }
