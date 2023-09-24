@@ -33,6 +33,7 @@ app.get('/sucesso', (req, res) => {
 app.get('/erro', (req, res) => {
   res.send(`<h1 style="color:red;"> Ops...aconteceu algum problema</h1>
   <a href="/">Voltar</a>`)
+  
 })
 
 app.get('/inserir', (req, res) => {
@@ -62,9 +63,9 @@ app.post('/inserirprof', (req, res) => {
   const CPF = req.body.cpf;
   const titulacao = req.body.titulacao;
  
-  professor.inserir(CPF, nome, titulacao, (err, rows) => {
-    if (err) {
-        console.error(err);
+  professor.inserir(CPF, nome, titulacao, (error, rows) => {
+    if (error) {
+        console.error(error);
         res.redirect('/erro');
     } else {
         if (rows > 0) {
@@ -109,9 +110,9 @@ app.post('/atualizaraluno', (req, res) => {
   const nome = req.body.nome;
   const id = req.body.id;
  
-  aluno.Atualizar(id, nome, (err, rows) => {
+  aluno.Atualizar(id, nome, (error, rows) => {
     if (err) {
-        console.error(err);
+        console.error(error);
         res.redirect('/erro');
     } else {
         if (rows > 0) {
@@ -124,7 +125,7 @@ app.post('/atualizaraluno', (req, res) => {
 });
 
   app.get('/listar', (req, res) => {
-    professor.ListarTodos((err,results)=>
+    professor.ListarTodos((error,results)=>
     {  console.log(results);
       
       res.send(`

@@ -37,11 +37,11 @@ function inserir(CPF, nome, titulacao, callback)
             if (titulacao == "Doutor" || titulacao == "Mestre" || titulacao == "Especialista" || titulacao == "Graduado"){
                 connection.query(`INSERT INTO professor (CPF, nome, titulacao) VALUES (?, ?, ?)`,
                 [CPF, nome, titulacao],
-                function(err, results){
+                function(error, results){
 
-                if(err)
+                if(error)
                 {
-                 callback(err, null );
+                 callback(error, null );
                  // Chama o callback com erro
                 }
                 else
@@ -64,7 +64,7 @@ function inserir(CPF, nome, titulacao, callback)
         catch(error){
             console.clear();
             console.log(error.message);
-            callback(err, null );
+            callback(error, null );
         }
        
     };
@@ -74,18 +74,19 @@ function apagar(ID, callback)
 {
     connection.query(`DELETE FROM professor WHERE ID = ?`,
     [ID],
-    function(err, results){
-        if(err)
-        {
-            callback(err, null );
-            // Chama o callback com erro
-        }
-        else
-        {
-            callback(null,results.affectedRows);
-            // Chama o callback com o número de linhas afetadas
-        }
-    }
+    function(error, results){
+
+      if(error)
+      {
+       callback(error, null );
+       // Chama o callback com erro
+      }
+      else
+      {
+       callback(null,results.affectedRows);
+       // Chama o callback com o número de linhas afetadas
+      }
+      }
     );
 }
 
@@ -111,10 +112,10 @@ function ListarTodos(callback)
 {
   connection.query(
     "SELECT * FROM professor",
-    function(err,results)
+    function(error,results)
     {
-      if (err) {
-        callback(err, null); // Chama o callback com erro
+      if (error) {
+        callback(error, null); // Chama o callback com erro
        } else {
         callback(null, results);
       } // Chama o callback com o resultado
